@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "NewCSVAddedColumn",
+				"name": "NoHeaderNewCSVAddedColumn",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
