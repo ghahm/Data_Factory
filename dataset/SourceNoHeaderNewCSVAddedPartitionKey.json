@@ -1,0 +1,39 @@
+{
+	"name": "SourceNoHeaderNewCSVAddedPartitionKey",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob4TempConnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "NoHeaderNewFileAddedPartitionKeyColumn.csv",
+				"folderPath": "udptest",
+				"container": "demodata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
+	}
+}
