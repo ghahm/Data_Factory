@@ -12,9 +12,21 @@
 					"name": "MongoExportedFile"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100) ~> MongoExportedFile"
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "newTestUDPFile",
+						"type": "DatasetReference"
+					},
+					"name": "TransformedFile"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Aggregate1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100) ~> MongoExportedFile\nMongoExportedFile aggregate(groupBy(fruit,\n\t\t{} = ERROR_FUNCTION('')),\n\tfruit = fruit,\n\t\tdatetime = ERROR_FUNCTION('')) ~> Aggregate1\nAggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmapColumn(\n\t\tfruit = Aggregate1@fruit,\n\t\tsize,\n\t\tcolor,\n\t\tdatetime\n\t)) ~> TransformedFile"
 		}
 	}
 }
