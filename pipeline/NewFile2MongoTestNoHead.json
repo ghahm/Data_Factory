@@ -35,7 +35,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "NewCSVAddedPartitionKeyColumn",
+						"referenceName": "NoHeadNewCSVAddedPartitionKeyColumn",
 						"type": "DatasetReference"
 					}
 				],
