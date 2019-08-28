@@ -20,11 +20,54 @@
 						"batchSize": 100
 					},
 					"sink": {
-						"type": "CosmosDbMongoDbApiSink",
-						"writeBatchTimeout": "00:30:00",
-						"writeBehavior": "insert"
+						"type": "AzureBlobFSSink"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "fruit"
+								},
+								"sink": {
+									"name": "parkey"
+								}
+							},
+							{
+								"source": {
+									"path": "fruit"
+								},
+								"sink": {
+									"name": "fruit"
+								}
+							},
+							{
+								"source": {
+									"path": "size"
+								},
+								"sink": {
+									"name": "size"
+								}
+							},
+							{
+								"source": {
+									"path": "color"
+								},
+								"sink": {
+									"name": "color"
+								}
+							},
+							{
+								"source": {
+									"path": "datetime"
+								},
+								"sink": {
+									"name": "datetime"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
@@ -34,7 +77,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "CosmosDbMongoDbApiCollection2",
+						"referenceName": "AzureDataLakeStorageFile1",
 						"type": "DatasetReference"
 					}
 				]
