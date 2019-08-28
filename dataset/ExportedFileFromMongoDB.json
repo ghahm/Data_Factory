@@ -9,9 +9,14 @@
 		"type": "AzureBlob",
 		"typeProperties": {
 			"format": {
-				"type": "JsonFormat"
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": false
 			},
-			"fileName": "ExportedJsonFromMongoDB.json",
+			"fileName": "ExportedJsonFromMongoDB.csv",
 			"folderPath": "demodata"
 		}
 	}
