@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "MongoMigrationTest",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data1",
+				"name": "Export to JSON",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -20,7 +20,7 @@
 						"batchSize": 100
 					},
 					"sink": {
-						"type": "AzureBlobFSSink"
+						"type": "BlobSink"
 					},
 					"enableStaging": false,
 					"translator": {
@@ -63,13 +63,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CosmosDbMongoDbApiCollection1",
+						"referenceName": "SourceMongoDBCollection",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureDataLakeStorageFile1",
+						"referenceName": "ExportedFileFromMongoDB",
 						"type": "DatasetReference"
 					}
 				]
