@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "newTestUDPFile.csv",
-				"folderPath": "newfiles",
+				"folderPath": "newFiles",
 				"fileSystem": "demodata"
 			},
 			"columnDelimiter": ",",
