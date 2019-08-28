@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Export to JSON",
+				"name": "Export to CSV",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
