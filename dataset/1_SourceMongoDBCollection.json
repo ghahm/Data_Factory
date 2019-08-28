@@ -1,5 +1,5 @@
 {
-	"name": "SourceMongoDBCollection",
+	"name": "1_SourceMongoDBCollection",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SourceMongoDB",
@@ -7,7 +7,6 @@
 		},
 		"annotations": [],
 		"type": "CosmosDbMongoDbApiCollection",
-		"schema": [],
 		"typeProperties": {
 			"collection": "srcCon"
 		}
