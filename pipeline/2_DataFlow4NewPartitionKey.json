@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "NewCSVAddedColumn",
+						"referenceName": "2_NewCSVAddedColumn",
 						"type": "DataFlowReference"
 					}
 				}

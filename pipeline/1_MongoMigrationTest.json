@@ -34,13 +34,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceMongoDBCollection",
+						"referenceName": "1_SourceMongoDBCollection",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ExportedCSVFromMongoDB",
+						"referenceName": "1_ExportedCSVFromMongoDB",
 						"type": "DatasetReference"
 					}
 				]

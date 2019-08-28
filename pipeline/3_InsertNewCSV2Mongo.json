@@ -34,13 +34,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "NewCSVAddedPartitionKey",
+						"referenceName": "3_NewCSVAddedPartitionKey",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "TargetMongoDBCollection",
+						"referenceName": "3_TargetMongoDBCollection",
 						"type": "DatasetReference"
 					}
 				]
