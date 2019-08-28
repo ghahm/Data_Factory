@@ -1,0 +1,32 @@
+{
+	"name": "NewCSVAddedColumn",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ExportedCSVFromMongoDB",
+						"type": "DatasetReference"
+					},
+					"name": "SourceMongoExportedFile"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "NoHeaderNewCSVAddedPartitionKey",
+						"type": "DatasetReference"
+					},
+					"name": "NoHeaderNewFileAddedPartitionKeyColumn"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn4NewPartitionKey"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1)) ~> SourceMongoExportedFile\nSourceMongoExportedFile derive(parKey = fruit+toString('-')+toString(toDate(datetime)),\n\tpartitionBy('hash', 1)) ~> DerivedColumn4NewPartitionKey\nDerivedColumn4NewPartitionKey sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string,\n\t\tColumn_3 as string,\n\t\tColumn_4 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['NoHeaderNewFileAddedPartitionKeyColumn.csv'],\n\tpartitionBy('hash', 1)) ~> NoHeaderNewFileAddedPartitionKeyColumn"
+		}
+	}
+}
