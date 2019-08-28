@@ -1,15 +1,12 @@
 {
-	"name": "CosmosDbMongoDbApiCollection2",
+	"name": "TargetMongoDBCollection",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "CosmosDbMongoDbApi1",
+			"referenceName": "TargetMongoDB",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "CosmosDbMongoDbApiCollection",
-		"schema": [],
-		"typeProperties": {
-			"collection": "desCon"
-		}
+		"schema": []
 	}
 }
