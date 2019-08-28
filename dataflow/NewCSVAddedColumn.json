@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "newTestUDPFile",
+						"referenceName": "NewCSVAddedPartitionColumn",
 						"type": "DatasetReference"
 					},
 					"name": "NewFileAddedPartitionColumn"
