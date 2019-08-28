@@ -1,5 +1,5 @@
 {
-	"name": "2_DataFlow4NewPartitionKey",
+	"name": "2_1_DataFlow4NewPartitionKey",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "NewCSVAddedColumn",
+						"referenceName": "NoHeaderNewCSVAddedColumn",
 						"type": "DataFlowReference"
 					}
 				}
