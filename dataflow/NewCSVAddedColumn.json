@@ -5,6 +5,10 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "ExportedCSVFromMongoDB",
+						"type": "DatasetReference"
+					},
 					"name": "SourceMongoExportedFile"
 				}
 			],
