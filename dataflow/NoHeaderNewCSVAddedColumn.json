@@ -1,5 +1,5 @@
 {
-	"name": "NewCSVAddedColumn",
+	"name": "NoHeaderNewCSVAddedColumn",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
