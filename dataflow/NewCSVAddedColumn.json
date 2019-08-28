@@ -18,7 +18,7 @@
 						"referenceName": "NewCSVAddedPartitionKey",
 						"type": "DatasetReference"
 					},
-					"name": "NoHeaderNewFileAddedPartitionKeyColumn"
+					"name": "NewFileAddedPartitionKeyColumn"
 				}
 			],
 			"transformations": [
@@ -26,7 +26,7 @@
 					"name": "DerivedColumn4NewPartitionKey"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1)) ~> SourceMongoExportedFile\nSourceMongoExportedFile derive(parKey = fruit+toString('-')+toString(toDate(datetime)),\n\tpartitionBy('hash', 1)) ~> DerivedColumn4NewPartitionKey\nDerivedColumn4NewPartitionKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['NewFileAddedPartitionKeyColumn.csv'],\n\tpartitionBy('hash', 1)) ~> NoHeaderNewFileAddedPartitionKeyColumn"
+			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1)) ~> SourceMongoExportedFile\nSourceMongoExportedFile derive(parKey = fruit+toString('-')+toString(toDate(datetime)),\n\tpartitionBy('hash', 1)) ~> DerivedColumn4NewPartitionKey\nDerivedColumn4NewPartitionKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['NewFileAddedPartitionKeyColumn.csv'],\n\tpartitionBy('hash', 1)) ~> NewFileAddedPartitionKeyColumn"
 		}
 	}
 }
