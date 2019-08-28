@@ -1,5 +1,5 @@
 {
-	"name": "MongoMigrationTest",
+	"name": "1_MongoMigrationTest",
 	"properties": {
 		"activities": [
 			{
