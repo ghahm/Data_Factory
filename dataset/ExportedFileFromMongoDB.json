@@ -11,7 +11,7 @@
 			"format": {
 				"type": "JsonFormat"
 			},
-			"fileName": "ExportedJsonFromMongoDB",
+			"fileName": "ExportedJsonFromMongoDB.json",
 			"folderPath": "demodata"
 		}
 	}
