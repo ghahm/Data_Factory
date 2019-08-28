@@ -13,8 +13,12 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MongoExportedFile"
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MongoExportedFile\nMongoExportedFile derive(date = toDate(datetime)) ~> DerivedColumn1"
 		}
 	}
 }
