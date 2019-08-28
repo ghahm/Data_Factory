@@ -23,10 +23,10 @@
 			],
 			"transformations": [
 				{
-					"name": "DerivedColumn1"
+					"name": "DerivedColumn4NewPartitionKey"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SourceMongoExportedFile\nSourceMongoExportedFile derive(parKey = fruit+toString('-')+toString(toDate(datetime))) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> NewFile4Mongo"
+			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SourceMongoExportedFile\nSourceMongoExportedFile derive(parKey = fruit+toString('-')+toString(toDate(datetime))) ~> DerivedColumn4NewPartitionKey\nDerivedColumn4NewPartitionKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> NewFile4Mongo"
 		}
 	}
 }
