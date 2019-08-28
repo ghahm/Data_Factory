@@ -1,0 +1,40 @@
+{
+	"name": "ExportedJsonFromMongoDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob4TempConnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureBlob",
+		"structure": [
+			{
+				"name": "fruit",
+				"type": "String"
+			},
+			{
+				"name": "size",
+				"type": "String"
+			},
+			{
+				"name": "color",
+				"type": "String"
+			},
+			{
+				"name": "datetime",
+				"type": "String"
+			},
+			{
+				"name": "_id.$oid",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"format": {
+				"type": "JsonFormat"
+			},
+			"fileName": "ExportedJsonFromMongoDB.json",
+			"folderPath": "demodata"
+		}
+	}
+}
