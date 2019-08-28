@@ -1,5 +1,5 @@
 {
-	"name": "DirNewCSVAddedPartitionKey",
+	"name": "DirInfoNewCSVAddedPartitionKey",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Blob4TempConnection",
