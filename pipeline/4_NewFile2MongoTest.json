@@ -1,5 +1,5 @@
 {
-	"name": "NewFile2MongoTest",
+	"name": "4_NewFile2MongoTest",
 	"properties": {
 		"activities": [
 			{
@@ -33,12 +33,6 @@
 					},
 					"enableStaging": false
 				},
-				"inputs": [
-					{
-						"referenceName": "NewCSVAddedPartitionKeyColumn",
-						"type": "DatasetReference"
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "TargetMongoDBCollection",
