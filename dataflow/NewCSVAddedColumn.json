@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ExportedCSVFromMongoDB",
+						"referenceName": "1_ExportedCSVFromMongoDB",
 						"type": "DatasetReference"
 					},
 					"name": "SourceMongoExportedFile"
