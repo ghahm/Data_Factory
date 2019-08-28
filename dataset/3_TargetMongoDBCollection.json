@@ -1,5 +1,5 @@
 {
-	"name": "TargetMongoDBCollection",
+	"name": "3_TargetMongoDBCollection",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "TargetMongoDB",
@@ -7,7 +7,6 @@
 		},
 		"annotations": [],
 		"type": "CosmosDbMongoDbApiCollection",
-		"schema": [],
 		"typeProperties": {
 			"collection": "desCon"
 		}
