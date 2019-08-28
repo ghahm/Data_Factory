@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DirNewCSVAddedPartitionKey",
+						"referenceName": "DirInfoNewCSVAddedPartitionKey",
 						"type": "DatasetReference"
 					},
 					"name": "NewFileAddedPartitionKeyColumn"
