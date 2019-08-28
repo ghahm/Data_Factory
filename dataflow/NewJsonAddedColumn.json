@@ -5,11 +5,7 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "udpmongofile",
-						"type": "DatasetReference"
-					},
-					"name": "MongoExportedFile"
+					"name": "SourceMongoExportedFile"
 				}
 			],
 			"sinks": [
@@ -26,7 +22,7 @@
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MongoExportedFile\nMongoExportedFile derive(date = fruit+toString(toDate(datetime))) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> NewFile4Mongo"
+			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> SourceMongoExportedFile\nSourceMongoExportedFile derive(date = fruit+toString(toDate(datetime))) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> NewFile4Mongo"
 		}
 	}
 }
