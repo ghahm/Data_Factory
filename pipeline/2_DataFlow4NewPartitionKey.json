@@ -1,5 +1,5 @@
 {
-	"name": "DataFlowTest",
+	"name": "2_DataFlow4NewPartitionKey",
 	"properties": {
 		"activities": [
 			{
