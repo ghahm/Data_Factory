@@ -16,7 +16,7 @@
 				"skipLineCount": 0,
 				"firstRowAsHeader": false
 			},
-			"fileName": "ExportedJsonFromMongoDB.csv",
+			"fileName": "ExportedCSVFromMongoDB.csv",
 			"folderPath": "demodata/udptest"
 		}
 	}
