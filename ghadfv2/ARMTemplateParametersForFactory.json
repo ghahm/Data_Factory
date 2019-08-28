@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ghadfv2"
+		},
+		"Blob4TempConnection_connectionString": {
+			"value": ""
+		},
+		"SourceMongoDB_connectionString": {
+			"value": ""
+		},
+		"TargetMongoDB_connectionString": {
+			"value": ""
+		},
+		"SourceMongoDB_properties_typeProperties_database": {
+			"value": "testDB"
+		},
+		"TargetMongoDB_properties_typeProperties_database": {
+			"value": "testDB"
+		}
+	}
+}

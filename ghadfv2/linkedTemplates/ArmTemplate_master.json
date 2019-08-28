@@ -1,0 +1,77 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "ghadfv2"
+		},
+		"Blob4TempConnection_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Blob4TempConnection'"
+		},
+		"SourceMongoDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SourceMongoDB'"
+		},
+		"TargetMongoDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'TargetMongoDB'"
+		},
+		"SourceMongoDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "testDB"
+		},
+		"TargetMongoDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "testDB"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas Token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"Blob4TempConnection_connectionString": {
+						"value": "[parameters('Blob4TempConnection_connectionString')]"
+					},
+					"SourceMongoDB_connectionString": {
+						"value": "[parameters('SourceMongoDB_connectionString')]"
+					},
+					"TargetMongoDB_connectionString": {
+						"value": "[parameters('TargetMongoDB_connectionString')]"
+					},
+					"SourceMongoDB_properties_typeProperties_database": {
+						"value": "[parameters('SourceMongoDB_properties_typeProperties_database')]"
+					},
+					"TargetMongoDB_properties_typeProperties_database": {
+						"value": "[parameters('TargetMongoDB_properties_typeProperties_database')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

@@ -1,0 +1,429 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "ghadfv2"
+		},
+		"Blob4TempConnection_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Blob4TempConnection'"
+		},
+		"SourceMongoDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SourceMongoDB'"
+		},
+		"TargetMongoDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'TargetMongoDB'"
+		},
+		"SourceMongoDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "testDB"
+		},
+		"TargetMongoDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "testDB"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/2_DataFlow4NewPartitionKey')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "2_NewCSVAddedColumn",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "2_NewCSVAddedColumn",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SourceMongoExportedFile": {},
+									"NewFileAddedPartitionKeyColumn": {}
+								}
+							},
+							"staging": {}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/2_NewCSVAddedColumn')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/1_MongoMigrationTest')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Export to CSV",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "CosmosDbMongoDbApiSource",
+								"batchSize": 100
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "1_SourceMongoDBCollection",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "1_ExportedCSVFromMongoDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/1_SourceMongoDBCollection')]",
+				"[concat(variables('factoryId'), '/datasets/1_ExportedCSVFromMongoDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/3_InsertNewCSV2Mongo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Insert2NewMongoDB",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "CosmosDbMongoDbApiSink",
+								"writeBatchTimeout": "00:30:00",
+								"writeBehavior": "insert"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "3_NewCSVAddedPartitionKey",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "3_TargetMongoDBCollection",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/3_NewCSVAddedPartitionKey')]",
+				"[concat(variables('factoryId'), '/datasets/3_TargetMongoDBCollection')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/1_SourceMongoDBCollection')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SourceMongoDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CosmosDbMongoDbApiCollection",
+				"typeProperties": {
+					"collection": "srcCon"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SourceMongoDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/3_TargetMongoDBCollection')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "TargetMongoDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CosmosDbMongoDbApiCollection",
+				"typeProperties": {
+					"collection": "desCon"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/TargetMongoDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Blob4TempConnection')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('Blob4TempConnection_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceMongoDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDbMongoDbApi",
+				"typeProperties": {
+					"connectionString": "[parameters('SourceMongoDB_connectionString')]",
+					"database": "[parameters('SourceMongoDB_properties_typeProperties_database')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TargetMongoDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDbMongoDbApi",
+				"typeProperties": {
+					"connectionString": "[parameters('TargetMongoDB_connectionString')]",
+					"database": "[parameters('TargetMongoDB_properties_typeProperties_database')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/1_ExportedCSVFromMongoDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob4TempConnection",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ExportedCSVFromMongoDB.csv",
+						"folderPath": "udptest",
+						"container": "demodata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob4TempConnection')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/2_NewCSVAddedColumn')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "1_ExportedCSVFromMongoDB",
+								"type": "DatasetReference"
+							},
+							"name": "SourceMongoExportedFile",
+							"typeProperties": {}
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "2_DirInfoNewCSVAddedPartitionKey",
+								"type": "DatasetReference"
+							},
+							"name": "NewFileAddedPartitionKeyColumn"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn4NewPartitionKey"
+						}
+					],
+					"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionBy('hash', 1)) ~> SourceMongoExportedFile\nSourceMongoExportedFile derive(parKey = fruit+toString('-')+toString(toDate(datetime)),\n\t\t{_id} = fruit+toString('-')+toString(datetime),\n\tpartitionBy('hash', 1)) ~> DerivedColumn4NewPartitionKey\nDerivedColumn4NewPartitionKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['NewFileAddedPartitionKeyColumn.csv'],\n\tpartitionBy('hash', 1)) ~> NewFileAddedPartitionKeyColumn"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/2_DirInfoNewCSVAddedPartitionKey')]",
+				"[concat(variables('factoryId'), '/datasets/1_ExportedCSVFromMongoDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/2_DirInfoNewCSVAddedPartitionKey')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob4TempConnection",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "udptest",
+						"container": "demodata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob4TempConnection')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/3_NewCSVAddedPartitionKey')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob4TempConnection",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "NewFileAddedPartitionKeyColumn.csv",
+						"folderPath": "udptest",
+						"container": "demodata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "fruit",
+						"type": "String"
+					},
+					{
+						"name": "size",
+						"type": "String"
+					},
+					{
+						"name": "color",
+						"type": "String"
+					},
+					{
+						"name": "datetime",
+						"type": "String"
+					},
+					{
+						"name": "parKey",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob4TempConnection')]"
+			]
+		}
+	]
+}
