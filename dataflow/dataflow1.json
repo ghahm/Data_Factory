@@ -14,7 +14,7 @@
 			],
 			"sinks": [],
 			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100) ~> MongoExportedFile"
+			"script": "\n\nsource(output(\n\t\tfruit as string,\n\t\tsize as string,\n\t\tcolor as string,\n\t\tdatetime as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> MongoExportedFile"
 		}
 	}
 }
