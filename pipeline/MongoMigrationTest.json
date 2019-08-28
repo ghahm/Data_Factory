@@ -20,7 +20,15 @@
 						"batchSize": 100
 					},
 					"sink": {
-						"type": "BlobSink"
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
 					},
 					"enableStaging": false,
 					"translator": {
@@ -31,7 +39,7 @@
 									"path": "fruit"
 								},
 								"sink": {
-									"name": "fruit"
+									"ordinal": 1
 								}
 							},
 							{
@@ -39,7 +47,7 @@
 									"path": "size"
 								},
 								"sink": {
-									"name": "size"
+									"ordinal": 2
 								}
 							},
 							{
@@ -47,7 +55,7 @@
 									"path": "color"
 								},
 								"sink": {
-									"name": "color"
+									"ordinal": 3
 								}
 							},
 							{
@@ -55,7 +63,7 @@
 									"path": "datetime"
 								},
 								"sink": {
-									"name": "datetime"
+									"ordinal": 4
 								}
 							}
 						]
@@ -69,7 +77,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ExportedFileFromMongoDB",
+						"referenceName": "ExportedCSVFromMongoDB",
 						"type": "DatasetReference"
 					}
 				]
