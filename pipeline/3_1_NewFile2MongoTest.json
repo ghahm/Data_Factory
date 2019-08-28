@@ -19,9 +19,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": false,
-							"wildcardFileName": "*.*",
-							"enablePartitionDiscovery": false
+							"recursive": true
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -36,7 +34,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DirNewCSVAddedPartitionKey",
+						"referenceName": "NewCSVAddedPartitionKey",
 						"type": "DatasetReference"
 					}
 				],
