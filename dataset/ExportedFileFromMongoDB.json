@@ -17,7 +17,7 @@
 				"firstRowAsHeader": false
 			},
 			"fileName": "ExportedJsonFromMongoDB.csv",
-			"folderPath": "demodata"
+			"folderPath": "demodata/udptest"
 		}
 	}
 }
