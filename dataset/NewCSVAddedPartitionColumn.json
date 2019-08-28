@@ -1,7 +1,6 @@
 {
 	"name": "NewCSVAddedPartitionColumn",
 	"properties": {
-		"description": "반드시 빈 CSV 파일 필요 ",
 		"linkedServiceName": {
 			"referenceName": "Blob4TempConnection",
 			"type": "LinkedServiceReference"
